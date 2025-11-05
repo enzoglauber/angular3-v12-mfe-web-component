@@ -6,8 +6,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { AComponent } from './a/a.component';
 import { BComponent } from './b/b.component';
-import { EmptyComponent } from './empty/empty.component';
-
+import { NotFoundComponent } from './not-found.component';
 
 @NgModule({
   imports: [
@@ -15,32 +14,29 @@ import { EmptyComponent } from './empty/empty.component';
     RouterModule.forRoot([
       { path: 'angular3/a', component: AComponent },
       { path: 'angular3/b', component: BComponent },
+      { path: 'angular3/error', component: NotFoundComponent },
 
-      // To prevent issues when routing to other micro frontends
-      // a catch-all route should be defined
-      { path: '**', component: EmptyComponent },
-
-    ])
+      { path: '**', redirectTo: 'angular3/error', pathMatch: 'full' },
+    ]),
   ],
-  declarations: [
-    AComponent,
-    BComponent,
-    AppComponent,
-    EmptyComponent
-  ],
+  declarations: [AComponent, BComponent, AppComponent, NotFoundComponent],
   providers: [],
-  bootstrap: []
+  bootstrap: [],
 })
-export class AppModule { 
-  constructor(private injector: Injector) {
-  }
+export class AppModule {
+  constructor(private injector: Injector) {}
 
   ngDoBootstrap() {
-    const ce = createCustomElement(AppComponent, {injector: this.injector});
+    const ce = createCustomElement(AppComponent, { injector: this.injector });
     customElements.define('angular3-element', ce);
 
-    customElements.define('angular3-a-element', createCustomElement(AComponent, {injector: this.injector}));
-    customElements.define('angular3-b-element', createCustomElement(BComponent, {injector: this.injector}));
+    customElements.define(
+      'angular3-a-element',
+      createCustomElement(AComponent, { injector: this.injector })
+    );
+    customElements.define(
+      'angular3-b-element',
+      createCustomElement(BComponent, { injector: this.injector })
+    );
   }
-
 }
