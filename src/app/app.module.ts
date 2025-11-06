@@ -1,22 +1,27 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, Injector } from '@angular/core';
+import { NgModule, Injector, Inject } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { AComponent } from './a/a.component';
 import { NotFoundComponent } from './not-found.component';
+import { APP_BASE_HREF } from '@angular/common';
 
 @NgModule({
   imports: [
     BrowserModule,
     RouterModule.forRoot(
       [
-        { path: 'angular3/a', component: AComponent },
-        { path: 'angular3/b', loadChildren: () => import('./b/b.module').then(m => m.BModule) },
-        { path: 'angular3/error', component: NotFoundComponent },
+        { path: 'a', component: AComponent },
+        {
+          path: 'b',
+          loadChildren: () => import('./b/b.module').then((m) => m.BModule),
+        },
+        { path: 'error', component: NotFoundComponent },
 
-        { path: '**', redirectTo: 'angular3/error', pathMatch: 'full' },
+        { path: '**', redirectTo: 'error', pathMatch: 'full' },
+        { path: '', redirectTo: 'a', pathMatch: 'full' },
       ],
       {
         enableTracing: true, // 🔥 log detalhado no console
@@ -24,7 +29,7 @@ import { NotFoundComponent } from './not-found.component';
     ),
   ],
   declarations: [AComponent, AppComponent, NotFoundComponent],
-  providers: [],
+  providers: [{ provide: APP_BASE_HREF, useValue: '/angular3/' }],
   bootstrap: [],
 })
 export class AppModule {

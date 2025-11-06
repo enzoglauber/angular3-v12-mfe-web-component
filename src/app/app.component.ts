@@ -1,25 +1,26 @@
-import { connectRouter } from '@angular-architects/module-federation-tools';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { connectRouter } from './utils/router-utils';
+import { APP_BASE_HREF } from '@angular/common';
 
 declare const require: any;
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-
   ngVersion = require('../../package.json').dependencies['@angular/core'];
 
-  constructor(private router: Router) {
-  }
+  constructor(
+    private router: Router,
+    @Inject(APP_BASE_HREF) private baseHref: string
+  ) {}
 
   ngOnInit(): void {
     // Not needed anymore when using the bootstrap helper with
     // appType == 'microfrontend'
-    // connectRouter(this.router);
+    connectRouter(this.router, false, this.baseHref);
   }
-
 }
