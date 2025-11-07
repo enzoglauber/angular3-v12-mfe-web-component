@@ -1,5 +1,8 @@
 # Mfe2
 
+Manfred's Shell:
+`git clone https://github.com/manfredsteyer/mf-nf-poc.git`
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.0-rc.1.
 
 ## Development server
